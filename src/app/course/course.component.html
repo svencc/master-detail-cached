@@ -1,14 +1,21 @@
-
 <div class="course-md">
 
-    <h2>{{ (course$ | async)?.description }}</h2>
+  <h2>{{ (course$ | async)?.description }}</h2>
 
+  <div *ngIf="(details$ | async) as lessonDetail; else master">
+    <h1>DETAIL</h1>
+    <button (click)="backToMaster()"><<<<BACK</button>
+    <lesson-detail [lesson]="lessonDetail"></lesson-detail>
+  </div>
+
+  <ng-template #master>
+    <h1>MASTER</h1>
     <div class="lessons-nav">
-        <button (click)="previousLessonsPage()">Previous</button>
-        <button (click)="nextLessonsPage()">Next</button>
+      <button (click)="previousLessonsPage()">Previous</button>
+      <button (click)="nextLessonsPage()">Next</button>
     </div>
 
-    <lessons-list [lessons]="lessons$ | async"></lessons-list>
-
+    <lessons-list [lessons]="lessons$ | async" (selected)="selectDetail($event)"></lessons-list>
+  </ng-template>
 </div>
 
